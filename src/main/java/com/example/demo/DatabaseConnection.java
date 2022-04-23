@@ -4,50 +4,43 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-/**
- * @ClassName DatabaseConnection
- * @Descriotion TODO
- * @Author nitaotao
- * @Date 2022/3/25 11:43
- * @Version 1.0
- **/
 public class DatabaseConnection {
-    private static final String DBDRIVER="com.mysql.jdbc.Driver";
-    private static final String DBURL = "jdbc:mysql://dusin.top:3306/Study";
-    public static final String USERNAME="jsp";
-    public static final String PASSWORD="jsp123";
-
-    private Connection conn;
-
-    public DatabaseConnection(){
-        //加载驱动
-        try {
-            Class.forName(DBDRIVER);
-            //获取连接
-            conn = DriverManager.getConnection(DBURL, USERNAME, PASSWORD);
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
+    //java DB数据库
+    /*private String DBDRIVER = "org.apache.derby.jdbc.ClientDriver";
+    private String DBURL = "jdbc:derby://localhost:1527/Study";
+    private String DBUSER = "sa";
+    private String DBPASSWORD = "sa123";*/
+    
+    //MySQL数据库
+    private String DBDRIVER = "com.mysql.jdbc.Driver";   //数据库驱动，根据所用数据库确定。不知道的可以百度搜索下
+    private String DBURL = "jdbc:mysql://localhost:3306/test?useUnicode=true&characterEncoding=utf8"; //数据库连接字符串，根据数据库不同而不同。
+    private String DBUSER = "root";    // 数据库用户名密码，一般安装数据库的时候确定了
+    private String DBPASSWORD = "root";
+    
+    private Connection conn = null;
+    
+    
+    public DatabaseConnection() throws ClassNotFoundException, SQLException {
+        Class.forName(DBDRIVER);
+        this.conn = DriverManager.getConnection(DBURL, DBUSER, DBPASSWORD);//
     }
 
-    public java.sql.Connection getConnection() throws SQLException {
-        if(conn==null||conn.isClosed()){
-            conn = DriverManager.getConnection(DBURL, USERNAME, PASSWORD);
+    public Connection getConnection() throws SQLException {
+        if (conn == null || conn.isClosed()) {
+            conn = DriverManager.getConnection(DBURL, DBUSER, DBPASSWORD);
         }
-        return  this.conn;
+        System.out.println(this.conn);
+        return this.conn;
     }
 
-    public void close(){
-        if(this.conn!=null){
+    public void close() {
+        if (this.conn != null) {
             try {
                 this.conn.close();
+                conn = null;
             } catch (SQLException e) {
                 e.printStackTrace();
             }
         }
     }
-
 }

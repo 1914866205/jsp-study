@@ -13,7 +13,7 @@ import java.sql.SQLException;
  **/
 public class JDBCConnection {
     private static final String DBDRIVER="com.mysql.jdbc.Driver";
-    private static final String DBURL = "jdbc:mysql://127.0.0.1:3306/book?useUnicode=true&characterEncoding=utf8";
+    private static final String DBURL = "jdbc:mysql://127.0.0.1:3306/test?useUnicode=true&characterEncoding=utf8";
     public static final String USERNAME="root";
     public static final String PASSWORD = "root";
     private Connection conn;

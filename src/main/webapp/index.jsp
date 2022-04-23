@@ -16,7 +16,6 @@
     %>
     <tr>
 
-
         <%
             for (int i = 0; i < 10; i++) {
         %>
@@ -76,7 +75,7 @@
     <%
         for (int i = 1; i <= map.size(); i++) {
             Student student = (Student) map.get(i);
-            System.out.println(student);
+//            System.out.println(student);
 
     %>
     <tr>

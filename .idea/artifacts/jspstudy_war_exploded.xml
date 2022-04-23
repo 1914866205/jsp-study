@@ -9,7 +9,11 @@
       </options>
     </properties>
     <root id="root">
-      <element id="directory" name="WEB-INF" />
+      <element id="directory" name="WEB-INF">
+        <element id="directory" name="classes">
+          <element id="module-output" name="jspstudy" />
+        </element>
+      </element>
       <element id="directory" name="META-INF">
         <element id="file-copy" path="$PROJECT_DIR$/target/jspstudy-1.0-SNAPSHOT/META-INF/MANIFEST.MF" />
       </element>
