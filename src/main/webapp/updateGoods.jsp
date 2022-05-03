@@ -23,7 +23,8 @@
     jdbcConnection.close();
 %>
 <body>
-<form method="post" action="updateSuccess.jsp">
+<%--<form method="post" action="updateSuccess.jsp">--%>
+<form method="post" action="UpdateGoodsServlet">
      <label>商品id：<%=goods.getId()%></label>
     <p> <label>商品：<input type="text" name="name" value=<%=goods.getName()%>> </label></p>
     <p><label>价钱：<input type="text" name="price" value=<%=goods.getPrice()%>> </label></p>

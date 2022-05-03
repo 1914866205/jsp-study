@@ -3,4 +3,46 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
          version="4.0">
+    <!--配置监听器-->
+    <listener>
+        <listener-class>com.example.jspstudy.OnlineCountistener</listener-class>
+    </listener>
+    <session-config>
+        <session-timeout>1</session-timeout>
+    </session-config>
+
+    <filter>
+        <filter-name>MyFilter</filter-name>
+        <filter-class>com.example.jspstudy.MyFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>MyFilter</filter-name>
+        <!-- 需要拦截过滤的资源路径 -->
+        <url-pattern>/success.jsp</url-pattern>
+    </filter-mapping>
+    <servlet>
+        <servlet-name>AddGoodsServlet</servlet-name>
+        <servlet-class>com.example.jspstudy.AddGoodsServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AddGoodsServlet</servlet-name>
+        <url-pattern>/AddGoodsServlet</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>DelGoodsServlet</servlet-name>
+        <servlet-class>com.example.jspstudy.DelGoodsServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>DelGoodsServlet</servlet-name>
+        <url-pattern>/DelGoodsServlet</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>UpdateGoodsServlet</servlet-name>
+        <servlet-class>com.example.jspstudy.UpdateGoodsServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>UpdateGoodsServlet</servlet-name>
+        <url-pattern>/UpdateGoodsServlet</url-pattern>
+    </servlet-mapping>
+
 </web-app>

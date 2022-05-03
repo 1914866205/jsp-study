@@ -21,6 +21,13 @@ public class Goods {
                 '}';
     }
 
+
+
+
+
+
+
+
     public Goods() {
     }
 

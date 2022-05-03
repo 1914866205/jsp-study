@@ -39,5 +39,6 @@
         <td><%=count %></td>
     </tr>
 </table>
+<a href="success.jsp">返回商品列表继续购物</a>
 </body>
 </html>

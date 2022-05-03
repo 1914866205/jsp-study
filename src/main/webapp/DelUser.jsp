@@ -1,7 +1,10 @@
 <%@ page import="com.example.demo.JDBCConnection" %>
 <%@ page import="com.example.dao.GoodsDao" %>
 <%@ page import="com.example.domain.bean.Goods" %>
-<%@ page import="java.sql.SQLException" %><%--
+<%@ page import="java.sql.SQLException" %>
+<%@ page import="java.util.List" %>
+<%@ page import="java.util.function.Predicate" %>
+<%@ page import="java.util.Set" %><%--
   Created by IntelliJ IDEA.
   User: nitaotao
   Date: 2022/4/23
@@ -11,19 +14,14 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>删除商品</title>
+    <title>踢出用户</title>
 </head>
 <%
     request.setCharacterEncoding("utf8");
-    int id = Integer.parseInt(request.getParameter("id"));
-    JDBCConnection jdbcConnection = new JDBCConnection();
-    GoodsDao dao = new GoodsDao(jdbcConnection);
-    try {
-        dao.deleteGoodsById(id);
-    } catch (SQLException e) {
-        e.printStackTrace();
-    }
-    jdbcConnection.close();
+    final String user = request.getParameter("user");
+    Set<String> users = (Set<String>) request.getServletContext().getAttribute("user");
+    users.remove(user);
+    request.getServletContext().setAttribute("user", users);
     RequestDispatcher requestDispatcher = request.getRequestDispatcher("success.jsp");
     requestDispatcher.forward(request, response);
 %>

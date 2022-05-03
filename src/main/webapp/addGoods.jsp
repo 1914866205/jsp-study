@@ -11,7 +11,8 @@
     <title>添加商品</title>
 </head>
 <body>
-<form  method="post" action="addSuccess.jsp">
+<%--<form  method="post" action="addSuccess.jsp">--%>
+<form  method="post" action="/AddGoodsServlet">
     <label>商品：<input type="text" name="name"/> </label>
     <p><label>价钱：<input type="text" name="price"/> </label></p>
     <p>

@@ -70,6 +70,9 @@ public class Student {
     public void setTotalPer(double usualPer, double experPer, double endPer) {
         this.totalPer=usualPer * 0.1 + experPer * 0.2 + endPer * 0.7;
     }
+    private String getMyName(){
+        return "我的名字："+this.name;
+    }
 
     public double getTotalPer() {
         return totalPer;

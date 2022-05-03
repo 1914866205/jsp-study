@@ -1,4 +1,7 @@
-<%--
+<%@ page import="java.util.List" %>
+<%@ page import="java.util.ArrayList" %>
+<%@ page import="java.util.Set" %>
+<%@ page import="java.util.HashSet" %><%--
   Created by IntelliJ IDEA.
   User: nitaotao
   Date: 2022/4/16
@@ -19,7 +22,16 @@
     session.setAttribute("password", password);
     System.out.println(username);
     System.out.println(password);
-    if ("ntt".equals(username) && "123".equals(password)) {
+    if ( "123".equals(password)) {
+        Set<String> user = (Set<String>) request.getServletContext().getAttribute("user");
+        if (user == null) {
+            user = new HashSet<>();
+            user.add(username);
+            request.getServletContext().setAttribute("user", user);
+        } else {
+            user.add(username);
+            request.getServletContext().setAttribute("user", user);
+        }
         RequestDispatcher requestDispatcher = request.getRequestDispatcher("success.jsp");
         requestDispatcher.forward(request,response);
     }else{
