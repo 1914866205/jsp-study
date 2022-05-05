@@ -1,5 +1,10 @@
 package com.example.domain.bean;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 /**
  * @ClassName Book
  * @Descriotion TODO

@@ -1,22 +1,21 @@
 <component name="ArtifactManager">
   <artifact type="exploded-war" name="jspstudy:war exploded">
-    <output-path>$PROJECT_DIR$/target/jspstudy-1.0-SNAPSHOT</output-path>
-    <properties id="maven-jee-properties">
-      <options>
-        <exploded>true</exploded>
-        <module>jspstudy</module>
-        <packaging>war</packaging>
-      </options>
-    </properties>
+    <output-path>$PROJECT_DIR$/out/artifacts/jspstudy_war_exploded</output-path>
     <root id="root">
       <element id="directory" name="WEB-INF">
         <element id="directory" name="classes">
           <element id="module-output" name="jspstudy" />
         </element>
+        <element id="directory" name="lib">
+          <element id="library" level="project" name="mysql-connector-java-5.1.7-bin (2)" />
+          <element id="library" level="project" name="gson-2.8.3" />
+          <element id="library" level="project" name="junit-4.10" />
+          <element id="library" level="project" name="Maven: org.apache.logging.log4j:log4j-core:2.13.3" />
+          <element id="library" level="project" name="Maven: org.apache.logging.log4j:log4j-api:2.7" />
+          <element id="library" level="project" name="Maven: com.alibaba:fastjson:1.2.8" />
+        </element>
       </element>
-      <element id="directory" name="META-INF">
-        <element id="file-copy" path="$PROJECT_DIR$/target/jspstudy-1.0-SNAPSHOT/META-INF/MANIFEST.MF" />
-      </element>
+      <element id="library" level="project" name="Maven: log4j:log4j:2.0" />
       <element id="javaee-facet-resources" facet="jspstudy/web/Web" />
     </root>
   </artifact>
