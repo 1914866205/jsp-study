@@ -1,3 +1,4 @@
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -10,29 +11,30 @@
     <script type="text/javascript" src="../js/jquery.min.js"></script>
     <script type="text/javascript" src="../js/jquery.easyui.min.js"></script>
     <script type="text/javascript">
-        function newGood(){
-            $('#dlg').dialog('open').dialog('setTitle','创建商品');
+        function newGood() {
+            $('#dlg').dialog('open').dialog('setTitle', '创建商品');
             $('#fm').form('clear');
             url = '/easy-ui/servlet/good/create';
         }
-        function editGood(){
+
+        function editGood() {
             var row = $('#dg').datagrid('getSelected');
-            if (row){
-                $('#dlg').dialog('open').dialog('setTitle','编辑商品');
-                $('#fm').form('load',row);
-                url = 'servlet/good/Update?id='+row.id;
+            if (row) {
+                $('#dlg').dialog('open').dialog('setTitle', '编辑商品');
+                $('#fm').form('load', row);
+                url = 'servlet/good/Update?id=' + row.id;
             }
         }
 
-        function saveGood(){
-            $('#fm').form('submit',{
+        function saveGood() {
+            $('#fm').form('submit', {
                 url: url,
-                onSubmit: function(){
+                onSubmit: function () {
                     return $(this).form('validate');
                 },
-                success: function(result){
-                    var result = eval('('+result+')');
-                    if (result.errorMsg){
+                success: function (result) {
+                    var result = eval('(' + result + ')');
+                    if (result.errorMsg) {
                         $.messager.show({
                             title: 'Error',
                             msg: result.errorMsg
@@ -44,13 +46,14 @@
                 }
             });
         }
-        function destroyGood(){
+
+        function destroyGood() {
             var row = $('#dg').datagrid('getSelected');
-            if (row){
-                $.messager.confirm('确定？','确实删除吗?',function(r){
-                    if (r){
-                        $.post('servlet/good/Del',{id:row.id},function(result){
-                            if (result.success){
+            if (row) {
+                $.messager.confirm('确定？', '确实删除吗?', function (r) {
+                    if (r) {
+                        $.post('servlet/good/Del', {id: row.id}, function (result) {
+                            if (result.success) {
                                 $('#dg').datagrid('reload');
                             } else {
                                 $.messager.show({	// show error message
@@ -58,23 +61,78 @@
                                     msg: result.errorMsg
                                 });
                             }
-                        },'json');
+                        }, 'json');
                     }
                 });
             }
         }
+        function getData(){
+            var rows = [];
+            for(var i=1; i<=800; i++){
+                var amount = Math.floor(Math.random()*1000);
+                var price = Math.floor(Math.random()*1000);
+                rows.push({
+                    inv: 'Inv No '+i,
+                    date: $.fn.datebox.defaults.formatter(new Date()),
+                    name: 'Name '+i,
+                    amount: amount,
+                    price: price,
+                    cost: amount*price,
+                    note: 'Note '+i
+                });
+            }
+            return rows;
+        }
+
+        function pagerFilter(data){
+            if (typeof data.length == 'number' && typeof data.splice == 'function'){	// is array
+                data = {
+                    total: data.length,
+                    rows: data
+                }
+            }
+            var dg = $(this);
+            var opts = dg.datagrid('options');
+            var pager = dg.datagrid('getPager');
+            pager.pagination({
+                onSelectPage:function(pageNum, pageSize){
+                    opts.pageNumber = pageNum;
+                    opts.pageSize = pageSize;
+                    pager.pagination('refresh',{
+                        pageNumber:pageNum,
+                        pageSize:pageSize
+                    });
+                    dg.datagrid('loadData',data);
+                }
+            });
+            if (!data.originalRows){
+                data.originalRows = (data.rows);
+            }
+            var start = (opts.pageNumber-1)*parseInt(opts.pageSize);
+            var end = start + parseInt(opts.pageSize);
+            data.rows = (data.originalRows.slice(start, end));
+            return data;
+        }
+
+        $(function(){
+            $('#dg').datagrid({loadFilter:pagerFilter}).datagrid('loadData', getData());
+        });
     </script>
 </head>
 <body>
 <div style="margin:20px 0;"></div>
 <div class="easyui-layout" style="width:700px;height:400px;">
-    <div data-options="region:'north'" title="商品管理系统" style="height:50px"></div>
-    <div data-options="region:'west',split:true" title="系统菜单" style="width:100px;"></div>
+    <div data-options="region:'north'" title="商品管理系统" style="height:60px">
+        <button><span>你好<%=session.getAttribute("username")%></span></button>
+    </div>
+    <div data-options="region:'west',split:true" title="系统菜单" style="width:100px;">
+        <a href="/easy-ui/servlet/good/Logout" class="easyui-linkbutton" iconCls="icon-remove" plain="true">退出</a>
+    </div>
     <div data-options="region:'center',title:'数据区域',iconCls:'icon-ok'">
         <table id="dg" title="商品列表" class="easyui-datagrid" style="width:600px;height:300px"
                url="servlet/good/Load"
                toolbar="#toolbar" pafomain="true" idField="id" striped="true" pagination="true"
-               rownumbers="true" fitColumns="true" singleSelect="true">
+               rownumbers="true" fitColumns="true" singleSelect="true" autoRowHeight="false" pageSize="10">
             <thead>
             <!--  striped="true"   设置为 true，则把行条纹化。（即奇偶行使用不同背景色） -->
             <!--  idField="id"   指示哪个字段是标识字段。 -->
@@ -114,11 +172,11 @@
     </div>
     <div id="dlg-buttons">
         <a href="#" class="easyui-linkbutton" iconCls="icon-ok" onclick="saveGood()">保存</a>
-        <a href="#" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlg').dialog('close')">取消</a>
+        <a href="#" class="easyui-linkbutton" iconCls="icon-cancel"
+           onclick="javascript:$('#dlg').dialog('close')">取消</a>
     </div>
 </div>
 </body>
 </html>
-<script type="text/javascript">
 
-</script>
+

@@ -44,8 +44,10 @@ public class Load extends HttpServlet {
             try {
                 page = Integer.getInteger(request.getParameter("page"));
                 rows = Integer.parseInt(request.getParameter("rows"));
-                System.out.println("page"+page);
-                System.out.println("rows"+rows);
+                System.out.println("///////////");
+                System.out.println("接收的分页参数为："+page);
+                System.out.println("接收的分页参数为："+rows);
+                System.out.println("///////////");
             } catch (NullPointerException e) {
                 page = 1;
                 rows = 20;
@@ -54,7 +56,6 @@ public class Load extends HttpServlet {
             GoodsDao goodsDao = new GoodsDao(new JDBCConnection());
             //本次的总数据量
             int total = goodsDao.findAllCount(key);
-            System.out.println("total:"+total);
             // (page-1)*rows 是当前是第几个数据，rows是本次的数据量
             List<Goods> goods = goodsDao.findAll(key, (page - 1) * rows, rows);
             //转换成EasyUI接收的JSON格式
