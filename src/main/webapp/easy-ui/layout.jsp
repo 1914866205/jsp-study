@@ -25,6 +25,11 @@
                 url = 'servlet/good/Update?id=' + row.id;
             }
         }
+        function selectGood() {
+            $('#dg').datagrid('load',{
+                searchInfo: $('#searchInfo').val()
+            });
+        }
 
         function saveGood() {
             $('#fm').form('submit', {
@@ -154,6 +159,8 @@
             <a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="newGood()">添加</a>
             <a href="#" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="editGood()">修改</a>
             <a href="#" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="destroyGood()">删除</a>
+            <input id="searchInfo" style="line-height:26px;border:1px solid #ccc">
+            <a href="#" class="easyui-linkbutton" iconCls="icon-search" plain="true" onclick="selectGood()">查询</a>
         </div>
     </div>
     <div id="dlg" class="easyui-dialog" style="width:400px;height:280px;padding:10px 20px"

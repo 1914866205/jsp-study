@@ -154,15 +154,17 @@ public class GoodsDao {
         int count = 0;
         String sql = "select count(*) from goods";
         if (key != null && !"".equals(key.trim())) {
-            sql += "where id like ? or name like ? or price like ?";
+            sql += " where `id` like ? or `name` like ? or price like ?";
         }
         try (Connection conn = jdbcConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)
         ) {
             if (key != null && !"".equals(key.trim())) {
-                pstmt.setString(1, "%" + key + "%");
-                pstmt.setString(2, "%" + key + "%");
-                pstmt.setString(3, "%" + key + "%");
+                key = "%" + key + "%";
+                pstmt.setString(1, key);
+                pstmt.setString(2, key);
+                pstmt.setString(3, key);
+                System.out.println(pstmt);
             }
             ResultSet rs = pstmt.executeQuery();
             if (rs.next()) {
@@ -183,7 +185,7 @@ public class GoodsDao {
         List<Goods> allGoods = new ArrayList();
         String sql = "select * from goods";
         if (key != null && !"".equals(key.trim())) {
-            sql += "where id like ? or name like ? or price like ?";
+            sql += " where `id` like ? or `name` like ? or price like ?";
         }
         sql += " limit ?,?";
         try (Connection conn = jdbcConnection.getConnection();
@@ -191,11 +193,13 @@ public class GoodsDao {
         ) {
 
             if (key != null && !"".equals(key.trim())) {
-                pstmt.setString(1, "%" + key + "%");
-                pstmt.setString(2, "%" + key + "%");
-                pstmt.setString(3, "%" + key + "%");
+                key = "%" + key + "%";
+                pstmt.setString(1, key);
+                pstmt.setString(2, key);
+                pstmt.setString(3, key);
                 pstmt.setInt(4, start);
                 pstmt.setInt(5, end);
+                System.out.println(pstmt);
             } else {
                 pstmt.setInt(1, start);
                 pstmt.setInt(2, end);

@@ -34,7 +34,7 @@ public class Load extends HttpServlet {
         try (PrintWriter out = response.getWriter()) {
             response.setContentType("text/json;character=UTF-8");
             request.setCharacterEncoding("utf-8");
-            String key = request.getParameter("searchKey");
+            String key = request.getParameter("searchInfo");
             if (key == null) {
                 key = "";
             }
@@ -45,6 +45,7 @@ public class Load extends HttpServlet {
                 page = Integer.getInteger(request.getParameter("page"));
                 rows = Integer.parseInt(request.getParameter("rows"));
                 System.out.println("///////////");
+                System.out.println("接收的key为："+key);
                 System.out.println("接收的分页参数为："+page);
                 System.out.println("接收的分页参数为："+rows);
                 System.out.println("///////////");
