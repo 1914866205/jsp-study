@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Insert title here</title>
+    <!-- 引入EasyUI的CSS和JS -->
+    <link rel="stylesheet" type="text/css" href="../themes/default/easyui.css">
+    <link rel="stylesheet" type="text/css" href="../themes/icon.css">
+    <link rel="stylesheet" type="text/css" href="../demo.css">
+    <script type="text/javascript" src="../js/jquery.min.js"></script>
+    <script type="text/javascript" src="../js/jquery.easyui.min.js"></script>
+    <script type="text/javascript">
+        function newGood(){
+            $('#dlg').dialog('open').dialog('setTitle','创建商品');
+            $('#fm').form('clear');
+            url = '/easy-ui/servlet/good/create';
+        }
+        function editGood(){
+            var row = $('#dg').datagrid('getSelected');
+            if (row){
+                $('#dlg').dialog('open').dialog('setTitle','编辑商品');
+                $('#fm').form('load',row);
+                url = 'servlet/good/Update?id='+row.id;
+            }
+        }
+
+        function saveGood(){
+            $('#fm').form('submit',{
+                url: url,
+                onSubmit: function(){
+                    return $(this).form('validate');
+                },
+                success: function(result){
+                    var result = eval('('+result+')');
+                    if (result.errorMsg){
+                        $.messager.show({
+                            title: 'Error',
+                            msg: result.errorMsg
+                        });
+                    } else {
+                        $('#dlg').dialog('close');		// close the dialog
+                        $('#dg').datagrid('reload');	// reload the user data
+                    }
+                }
+            });
+        }
+        function destroyGood(){
+            var row = $('#dg').datagrid('getSelected');
+            if (row){
+                $.messager.confirm('确定？','确实删除吗?',function(r){
+                    if (r){
+                        $.post('servlet/good/Del',{id:row.id},function(result){
+                            if (result.success){
+                                $('#dg').datagrid('reload');
+                            } else {
+                                $.messager.show({	// show error message
+                                    title: 'Error',
+                                    msg: result.errorMsg
+                                });
+                            }
+                        },'json');
+                    }
+                });
+            }
+        }
+    </script>
+</head>
+<body>
+<div style="margin:20px 0;"></div>
+<div class="easyui-layout" style="width:700px;height:400px;">
+    <div data-options="region:'north'" title="商品管理系统" style="height:50px"></div>
+    <div data-options="region:'west',split:true" title="系统菜单" style="width:100px;"></div>
+    <div data-options="region:'center',title:'数据区域',iconCls:'icon-ok'">
+        <table id="dg" title="商品列表" class="easyui-datagrid" style="width:600px;height:300px"
+               url="servlet/good/Load"
+               toolbar="#toolbar" pafomain="true" idField="id" striped="true" pagination="true"
+               rownumbers="true" fitColumns="true" singleSelect="true">
+            <thead>
+            <!--  striped="true"   设置为 true，则把行条纹化。（即奇偶行使用不同背景色） -->
+            <!--  idField="id"   指示哪个字段是标识字段。 -->
+            <!--  idField="id"   指示哪个字段是标识字段。 -->
+            <!--  pagination	boolean	设置为 true，则在数据网格（datagrid）底部显示分页工具栏。 -->
+            <!--  rownumbers	boolean	设置为 true，则显示带有行号的列。 -->
+            <!--  fitColumns	boolean	设置为 true，则会自动扩大或缩小列的尺寸以适应网格的宽度并且防止水平滚动。 -->
+            <!--  toolbar	数据网格（datagrid）面板的头部工具栏。 -->
+            <!--  url	string	从远程站点请求数据的 URL。 -->
+            <!-- singleSelect	boolean	设置为 true，则只允许选中一行。 -->
+            <tr>
+                <th field="id" width="50">商品id</th>
+                <th field="name" width="50">商品名称</th>
+                <th field="price" width="50">价格</th>
+            </tr>
+            </thead>
+        </table>
+        <div id="toolbar">
+            <a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="newGood()">添加</a>
+            <a href="#" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="editGood()">修改</a>
+            <a href="#" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="destroyGood()">删除</a>
+        </div>
+    </div>
+    <div id="dlg" class="easyui-dialog" style="width:400px;height:280px;padding:10px 20px"
+         closed="true" buttons="#dlg-buttons">
+        <div class="ftitle">商品信息</div>
+        <form id="fm" method="post">
+            <div class="fitem">
+                <label>商品名称:</label>
+                <input name="name" class="easyui-validatebox" required="true">
+            </div>
+            <div class="fitem">
+                <label>价格:</label>
+                <input name="price" class="easyui-validatebox" required="true">
+            </div>
+        </form>
+    </div>
+    <div id="dlg-buttons">
+        <a href="#" class="easyui-linkbutton" iconCls="icon-ok" onclick="saveGood()">保存</a>
+        <a href="#" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlg').dialog('close')">取消</a>
+    </div>
+</div>
+</body>
+</html>
+<script type="text/javascript">
+
+</script>

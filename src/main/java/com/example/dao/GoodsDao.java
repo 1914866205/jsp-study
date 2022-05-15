@@ -2,12 +2,15 @@ package com.example.dao;
 
 import com.example.demo.JDBCConnection;
 import com.example.domain.bean.Goods;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
+import java.util.logging.Level;
 
 /**
  * @ClassName GoodsDao
@@ -22,6 +25,7 @@ public class GoodsDao {
     public GoodsDao(JDBCConnection jdbcConnection) {
         this.jdbcConnection = jdbcConnection;
     }
+
     /**
      * @return 返回所有商品
      * @Author nitaotao
@@ -73,6 +77,7 @@ public class GoodsDao {
             conn.close();
         }
     }
+
     /**
      * @return 返回执行的记录数
      * @MethodName updateBook
@@ -136,5 +141,77 @@ public class GoodsDao {
             st.close();
             conn.close();
         }
+    }
+
+    /**
+     * 查询某字段有关的商品的数量
+     *
+     * @param key
+     * @return
+     */
+    public int findAllCount(String key) throws SQLException {
+
+        int count = 0;
+        String sql = "select count(*) from goods";
+        if (key != null && !"".equals(key.trim())) {
+            sql += "where id like ? or name like ? or price like ?";
+        }
+        try (Connection conn = jdbcConnection.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)
+        ) {
+            if (key != null && !"".equals(key.trim())) {
+                pstmt.setString(1, "%" + key + "%");
+                pstmt.setString(2, "%" + key + "%");
+                pstmt.setString(3, "%" + key + "%");
+            }
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                count = rs.getInt(1);
+            }
+            rs.close();
+        }
+        return count;
+    }
+
+    /**
+     * @return 分页查询所有商品
+     * @Author nitaotao
+     * @Description
+     * @Param
+     **/
+    public List<Goods> findAll(String key, int start, int end) throws SQLException {
+        List<Goods> allGoods = new ArrayList();
+        String sql = "select * from goods";
+        if (key != null && !"".equals(key.trim())) {
+            sql += "where id like ? or name like ? or price like ?";
+        }
+        sql += " limit ?,?";
+        try (Connection conn = jdbcConnection.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)
+        ) {
+
+            if (key != null && !"".equals(key.trim())) {
+                pstmt.setString(1, "%" + key + "%");
+                pstmt.setString(2, "%" + key + "%");
+                pstmt.setString(3, "%" + key + "%");
+                pstmt.setInt(4, start);
+                pstmt.setInt(5, end);
+            } else {
+                pstmt.setInt(1, start);
+                pstmt.setInt(2, end);
+            }
+            ResultSet resultSet = pstmt.executeQuery();
+            while (resultSet.next()) {
+                allGoods.add(new Goods(
+                        resultSet.getInt("id"),
+                        resultSet.getString("name"),
+                        resultSet.getDouble("price")
+                ));
+            }
+            resultSet.close();
+        } catch (Exception e) {
+            Logger.getLogger(Goods.class.getName()).log(Level.SEVERE, null, e);
+        }
+        return allGoods;
     }
 }
